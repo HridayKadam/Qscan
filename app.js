@@ -2,6 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const cameraScanButton = document.getElementById('camera-scan');
     const fileUploadInput = document.getElementById('file-upload');
     const productDetailsContainer = document.getElementById('product-details');
+    const infoButton = document.getElementById('info-button');
+    const aboutButton = document.getElementById('about-button');
 
     // Barcode Scanning Configuration
     const html5QrCode = new Html5Qrcode("qr-reader");
@@ -45,7 +47,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         ).then(({ data: { text } }) => {
             displayProductDetails({
-                type: 'ocr',
                 value: text
             });
         });
@@ -53,41 +54,51 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Display Product Details
     function displayProductDetails(scanResult) {
-        // This is a mock implementation. In a real app, you'd 
-        // connect to a backend or product database
-        const mockProductDetails = {
-            name: scanResult.type === 'barcode' 
-                ? 'Sample Product' 
-                : extractProductName(scanResult.value),
-            mrp: '₹99.99',
-            expiryDate: '12/2025',
-            barcodeType: scanResult.type
-        };
+        const productName = extractProductName(scanResult.value);
+        const mrp = extractMRP(scanResult.value);
+        const expiryDate = extractExpiryDate(scanResult.value);
 
         productDetailsContainer.innerHTML = `
             <div class="product-info-item">
                 <span class="product-info-label">Product:</span>
-                ${mockProductDetails.name}
+                ${productName || 'Unknown Product'}
             </div>
             <div class="product-info-item">
                 <span class="product-info-label">MRP:</span>
-                ${mockProductDetails.mrp}
+                ${mrp || 'Unknown'}
             </div>
             <div class="product-info-item">
                 <span class="product-info-label">Expiry:</span>
-                ${mockProductDetails.expiryDate}
-            </div>
-            <div class="product-info-item">
-                <span class="product-info-label">Scan Type:</span>
-                ${mockProductDetails.barcodeType}
+                ${expiryDate || 'Unknown'}
             </div>
         `;
     }
 
     // Basic product name extraction from OCR text
     function extractProductName(ocrText) {
-        // Implement basic text parsing logic
         const lines = ocrText.split('\n');
         return lines[0] || 'Unknown Product';
     }
+
+    // Extract MRP from OCR text
+    function extractMRP(ocrText) {
+        const mrpMatch = ocrText.match(/₹\d+(\.\d{1,2})?/);
+        return mrpMatch ? mrpMatch[0] : null;
+    }
+
+    // Extract expiry date from OCR text
+    function extractExpiryDate(ocrText) {
+        const expiryMatch = ocrText.match(/(0[1-9]|1[0-2])\/\d{4}/);
+        return expiryMatch ? expiryMatch[0] : null;
+    }
+
+    // Info Button Handler
+    infoButton.addEventListener('click', () => {
+        alert('This app scans product details like name, MRP, and expiry date using OCR.');
+    });
+
+    // About Button Handler
+    aboutButton.addEventListener('click', () => {
+        alert('Qscan App v1.0\nDeveloped by [Your Name].');
+    });
 });
