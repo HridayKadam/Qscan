@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qscan smarter, Shop easier</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+        <header class="app-header">
+            <h1>Qscan</h1>
+            <p>Scan Smarter, Shop Easier</p>
+        </header>
+
+        <main class="scan-section">
+            <button class="scan-button" id="camera-scan">
+                <i class="fas fa-barcode"></i>
+                Barcode Scanner
+            </button>
+
+            <input type="file" id="file-upload" accept="image/*" capture="environment">
+            <label for="file-upload" class="scan-button file-upload-button">
+                <i class="fas fa-image"></i>
+                Upload Product Image
+            </label>
+
+            <div id="scan-results" class="results-container">
+                <h2>Scan Results</h2>
+                <div id="product-details">
+                    <p class="placeholder">Scan a barcode or upload an image to see product details</p>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    
+    <!-- External Libraries -->
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <script src="https://unpkg.com/tesseract.js@v2.1.0/dist/tesseract.min.js"></script>
+    
+    <!-- Local Scripts -->
+    <script src="app.js"></script>
+</body>
+</html>
